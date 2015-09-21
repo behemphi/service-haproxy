@@ -7,5 +7,4 @@
 sed s#SE_BACKEND_KEY#$SE_BACKEND_KEY# /etc/confd/conf.d/haproxy.toml.template > /etc/confd/conf.d/haproxy.toml
 
 # Okay now we can run confd 
-exec /usr/bin/confd -backend stackengine -node $SE_HOST_IP:8443 -scheme https -auth-token $SE_API_TOKEN
-
+exec /usr/bin/confd -backend stackengine -node $SE_HOST_IP:8443 -scheme https -auth-token $SE_API_TOKEN -interval 5
