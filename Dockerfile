@@ -32,6 +32,13 @@ ADD \
     confd/confd \
     /usr/bin/confd
 
+ADD \
+    confd/confd.sh \
+    /usr/bin/confd.sh
+
+RUN \
+    chmod +x /usr/bin/confd.sh
+
 RUN \
     chmod +x /usr/bin/confd && \
     mkdir -p /etc/confd/conf.d && \
@@ -44,12 +51,5 @@ ADD \
 ADD \  
     haproxy/haproxy.toml.template \
     /etc/confd/conf.d/haproxy.toml.template
-
-ADD \
-    haproxy/confd.sh \
-    /usr/bin/confd.sh
-
-RUN \
-    chmod +x /usr/bin/confd.sh
 
 ENTRYPOINT /usr/local/bin/supervisord -c /etc/supervisord.conf

@@ -22,6 +22,18 @@ the haproxy service.
 For example usage, please see the 
 [stack-haproxy repo](http://github.com/stackhub/stack-haproxy).
 
+## Stats
+
+If you would like to see the stats page, navigate to 
+`http://IPADDR:1936/haproxy?stats`.  You will be prompted for basic auth:
+
+* username: stackhubdemo
+* password: stackhubpass
+
+If you are working locally you can check with curl:
+
+`curl -u stackhubdemo:stackhubpass http://localhost:1936/haproxy?stats`
+
 # License
 
 MIT
