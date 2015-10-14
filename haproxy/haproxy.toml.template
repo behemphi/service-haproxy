@@ -6,6 +6,6 @@ dest = "/etc/haproxy/haproxy.cfg"
 # service in the StackEngine CAC.  Don't forget to also adjust
 # this value in `/etc/confd/templates/haproxy.cfg.template
 keys = [
-"SE_BACKEND_KEY"
+"apps/SE_SERVICE_DISCOVERY_KEY/containers"
 ]
-reload_cmd = "supervisorctl reload haproxy"
+reload_cmd = "sv reload haproxy"

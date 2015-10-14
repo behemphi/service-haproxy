@@ -1,55 +1,34 @@
 # Create an HAProxy container that will dynamically rewrite its config
 # when backends are added and removed.
-FROM ubuntu:14.04
+FROM stackhub/base-confd
 
-#
-# Install os packages
-#
-
-# Install supervisor and haproxy
-RUN apt-get update 
-RUN apt-get upgrade -y
-RUN apt-get install -y \
-        python-setuptools \
-        haproxy
-
-#
-# Install and configure `supervisord`
-#
-
+# Install `haproxy`
 RUN \
-    easy_install supervisor
+    apk upgrade && \
+    apk update && \
+    apk add haproxy
 
-ADD \
-    supervisord/supervisord.conf \
-    /etc/supervisord.conf
-
-#
-# Install and configure confd
-#
-
-ADD \
-    confd/confd \
-    /usr/bin/confd
-
-ADD \
-    confd/confd.sh \
-    /usr/bin/confd.sh
-
-RUN \
-    chmod +x /usr/bin/confd.sh
-
-RUN \
-    chmod +x /usr/bin/confd && \
-    mkdir -p /etc/confd/conf.d && \
-    mkdir -p /etc/confd/templates
-
-ADD \  
-    haproxy/haproxy.cfg.template \
-    /etc/confd/templates/haproxy.cfg.template
-
+# Lay down the configuration templates
 ADD \  
     haproxy/haproxy.toml.template \
     /etc/confd/conf.d/haproxy.toml.template
 
-ENTRYPOINT /usr/local/bin/supervisord -c /etc/supervisord.conf
+ADD \  
+    haproxy/haproxy.cfg.template_orig \
+    /etc/confd/templates/haproxy.cfg.template_orig
+
+ADD \ 
+    haproxy/haproxy.cfg.stub \
+    /etc/haproxy/haproxy.cfg
+
+# Make `haproxy` start automagically with `runit`
+RUN \
+    mkdir -pv /etc/sv/haproxy && \
+    chmod 2775 /etc/sv/haproxy && \
+    ln -sv /etc/sv/haproxy /service
+
+ADD \ 
+    haproxy/haproxy.sh \
+    /etc/sv/haproxy/run
+
+ENTRYPOINT ["/sbin/runsvdir", "/service"]
