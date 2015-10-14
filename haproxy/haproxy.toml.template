@@ -8,4 +8,4 @@ dest = "/etc/haproxy/haproxy.cfg"
 keys = [
 "apps/SE_SERVICE_DISCOVERY_KEY/containers"
 ]
-reload_cmd = "sv reload haproxy"
+reload_cmd = "sv restart haproxy"
