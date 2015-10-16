@@ -43,7 +43,7 @@ backend nginx_80
     # `confd` writes backends dynamically
     # You will need to manually change the key to the one you want
     # Don't forget to do this in the TOML file as well.
-    {{$servers := getenv "SE_BACKEND_KEY"}}
+    {{$servers := getenv "STACKENGINE_BACKEND_KEY"}}
     {{$values := printf "/%s/*" $servers}}
     {{range gets $values}}
         server {{base .Key}} {{.Value}} check
